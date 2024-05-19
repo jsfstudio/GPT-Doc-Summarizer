@@ -1,4 +1,58 @@
 file_map = """
+Generate an SEO optimized and insightful caption for a marketing image. The caption should highlight key benefits, appeal to the target audience, and include relevant keywords for search engine optimization. Ensure the caption includes line breaks for better readability.
+
+Instructions:
+
+Look at the uploaded file to understand the content of the image.
+Use the provided details to craft the caption.
+Details for the Image:
+
+Image Description: (Describe the content of the image and any text it includes)
+Target Audience: (Specify the intended audience for the product or service)
+Key Benefits to Highlight: (List the main benefits that should be included in the caption)
+Keywords to Include: (Provide a list of relevant keywords for SEO)
+Example:
+
+Image Description: AI chatbots helping people shop online with a laptop in the background showing an e-commerce site.
+Target Audience: E-commerce business owners and online retailers.
+Key Benefits to Highlight: Personalized shopping assistance, instant FAQ responses, improved customer experience.
+Keywords to Include: AI chatbots, e-commerce, customer engagement, online shopping, personalized assistance.
+Generated Caption:
+
+"🛒 Revolutionize E-Commerce with AI Chatbots! 🛒
+
+Enhance customer engagement and boost sales with our cutting-edge AI chatbots.
+
+Benefits:
+
+🛍️ Personalized Assistance: Provide tailored shopping help to each customer.
+⚡ Instant Responses: Quickly address FAQs for online shoppers.
+🌟 Enhanced Experience: Improve the overall e-commerce customer journey.
+🌐 Multilingual Support: Cater to a global audience with ease.
+🧠 Smart Recommendations: Offer personalized product suggestions.
+Step into the future of e-commerce and transform your customer interactions today! 🤖💬
+
+#Ecommerce #AIPowered #Chatbot #CustomerEngagement #SalesBoost"
+
+
+"""
+
+
+file_combine = """
+Read all the provided summaries from a larger document. They will be enclosed in triple backticks. 
+Determine what the overall document is about and summarize it with this information in mind.
+Synthesize the info into a well-formatted easy-to-read synopsis, structured like an essay that summarizes them cohesively. 
+Do not simply reword the provided text. Do not copy the structure from the provided text.
+Avoid repetition. Connect all the ideas together.
+Preceding the synopsis, write a short, bullet form list of key takeaways.
+Format in HTML. Text should be divided into paragraphs. Paragraphs should be indented. 
+
+'''{text}'''
+
+
+"""
+
+article_map = """
 You will be given a topic and a purpose in text formate. This will be enclosed in triple backticks.
 
 '''{text}'''
@@ -34,30 +88,7 @@ Conclude your post with at least five relevant hashtags to enhance visibility an
 again, remember to use bullet points or any other structure to make the content quick and easy to read.
 Your objective is to craft posts that not only inform but also inspire and engage, positioning them as essential reads for professionals keen on staying ahead of the curve in their industries. Let's aim to create content that's not just seen but remembered and acted upon.
 Each Post must Highlight our name Cognitive Commerce (Cogmerce) and position our company in the post as if we can provide the services without being too salesy. remember to provide actual value to our readers. 
-"""
 
-
-file_combine = """
-Read all the provided summaries from a larger document. They will be enclosed in triple backticks. 
-Determine what the overall document is about and summarize it with this information in mind.
-Synthesize the info into a well-formatted easy-to-read synopsis, structured like an essay that summarizes them cohesively. 
-Do not simply reword the provided text. Do not copy the structure from the provided text.
-Avoid repetition. Connect all the ideas together.
-Preceding the synopsis, write a short, bullet form list of key takeaways.
-Format in HTML. Text should be divided into paragraphs. Paragraphs should be indented. 
-
-'''{text}'''
-
-
-"""
-
-youtube_map = """
-You will be given a single section from a transcript of a youtube video. This will be enclosed in triple backticks.
-Please provide a cohesive summary of the section of the transcript, focusing on the key points and main ideas, while maintaining clarity and conciseness.
-
-'''{text}'''
-
-FULL SUMMARY:
 """
 
 
