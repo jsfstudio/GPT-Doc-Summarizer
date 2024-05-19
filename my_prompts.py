@@ -3,7 +3,7 @@ Generate an SEO optimized and insightful caption for a marketing image. The capt
 
 Do not describe the image. Do not add any other text to the response. only respond with the caption. add cool and attractive emojis when applicable. 
 
-Ensure each caption has a catchy and intriguing title and has at least 5 bullet points highlighting the features, benefits and ROIs. 
+Ensure each caption has a catchy and intriguing title and has at least 5 bullet points highlighting the features, benefits and ROIs. Make sure that each bullet point is on a new line.
 
 Add at least 5 hashtags to the caption as well. 
 
