@@ -1,146 +1,103 @@
 import os
 import streamlit as st
+import openai
+import base64
+import requests
+from my_prompts import caption_prompt, article_prompt
 
-from utils import (
-    doc_loader, summary_prompt_creator, doc_to_final_summary,
-)
-from my_prompts import file_map, file_combine, youtube_map, youtube_combine
-from streamlit_app_utils import check_gpt_4, check_key_validity, create_temp_file, create_chat_model, \
-    token_limit, token_minimum
+def create_temp_file(uploaded_file):
+    temp_file_path = f"temp_{uploaded_file.name}"
+    with open(temp_file_path, "wb") as f:
+        f.write(uploaded_file.getbuffer())
+    return temp_file_path
 
-from utils import transcript_loader
+def encode_image(image_path):
+    with open(image_path, "rb") as image_file:
+        return base64.b64encode(image_file.read()).decode('utf-8')
 
-
-def main():
-    """
-    The main function for the Streamlit app.
-
-    :return: None.
-    """
-    st.title("JSF Summarizer")
-
-    goal = st.radio("What to Generate?", ('Article', 'Caption'))
-
-    if goal == 'Caption':
-        uploaded_file = st.file_uploader("Enter the Picture you want instructions for", type=['png', 'jpg'])
-        st.sidebar.markdown('# Git link: [Caption Generator]')
-
-    if goal == 'Article':
-        article = st.text_input("Enter the Topic, Purpose and any other Intructions")
-        st.sidebar.markdown('# Git link: [Article Writing]')
-
-    api_key = st.text_input("Enter API key here, or contact the author if you don't have one.")
-    st.markdown('[Author email](mailto:connect@jsfstudio.co)')
-    use_gpt_4 = st.checkbox("Use GPT-4 for the final prompt (STRONGLY recommended, requires GPT-4 API access - progress bar will appear to get stuck as GPT-4 is slow)", value=True)
-    #find_clusters = st.checkbox('Find optimal clusters (experimental, could save on token usage)', value=False)
-    st.sidebar.markdown('# Made by: [JSF Studio]')
-    
-    st.sidebar.markdown("""<small>It's always good practice to verify that a website is safe before giving it your API key. 
-                        This site is open source, so you can check the code yourself, or run the streamlit app locally.</small>""", unsafe_allow_html=True)
-
-
-    if st.button('Generate (click once and wait)'):
-        if goal == 'Caption':
-            process_generate_button(uploaded_file, api_key, use_gpt_4, find_clusters)
-
-        else:
-            article = article
-            process_generate_button(article, api_key, use_gpt_4, find_clusters, file=False)
-
-
-def process_generate_button(file_or_transcript, api_key, use_gpt_4, find_clusters, file=True):
-    """
-    Processes the summarize button, and displays the summary if input and doc size are valid
-
-    :param file_or_transcript: The file uploaded by the user or the transcript from the YouTube URL
-
-    :param api_key: The API key entered by the user
-
-    :param use_gpt_4: Whether to use GPT-4 or not
-
-    :param find_clusters: Whether to find optimal clusters or not, experimental
-
-    :return: None
-    """
-    #if not validate_input(file_or_transcript, api_key, use_gpt_4):
-    #    return
-
+def process_generate_button(input_data, api_key, prompt, file=True):
     with st.spinner("Generating... please wait..."):
+        openai.api_key = api_key
+        model = "gpt-4o"
+
         if file:
-            temp_file_path = create_temp_file(file_or_transcript)
-            doc = doc_loader(temp_file_path)
-            map_prompt = file_map
-            #combine_prompt = file_combine
+            temp_file_path = create_temp_file(input_data)
+            base64_image = encode_image(temp_file_path)
+            prompt = {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": "What’s in this image?"},
+                    {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{base64_image}"}}
+                ]
+            }
         else:
-            art = file_or_transcript
-            map_prompt = article_map
-            #combine_prompt = youtube_combine
-        llm = create_chat_model(api_key, use_gpt_4)
-        initial_prompt_list = summary_prompt_creator(map_prompt, 'text', llm)
-        #final_prompt_list = summary_prompt_creator(combine_prompt, 'text', llm)
+            prompt = {
+                "role": "user",
+                "content": [{"type": "text", "text": input_data}]
+            }
 
-        if not validate_doc_size(doc):
-            if file:
-                os.unlink(temp_file_path)
-            return
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {api_key}"
+        }
 
-        #if find_clusters:
-         #   summary = doc_to_final_summary(doc, 10, initial_prompt_list, final_prompt_list, api_key, use_gpt_4, find_clusters)
+        payload = {
+            "model": model,
+            "messages": [prompt],
+            "max_tokens": 500
+        }
 
-       # else:
-        
-        generated = doc_to_final_summary(doc, 10, initial_prompt_list, final_prompt_list, api_key, use_gpt_4)
+        response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
 
-        st.markdown(summary, unsafe_allow_html=True)
+        if response.status_code == 200:
+            st.markdown(response.json()['choices'][0]['message']['content'], unsafe_allow_html=True)
+        else:
+            st.error("Failed to generate response")
+
         if file:
             os.unlink(temp_file_path)
 
-
-def validate_doc_size(doc):
-    """
-    Validates the size of the document
-
-    :param doc: doc to validate
-
-    :return: True if the doc is valid, False otherwise
-    """
-    if not token_limit(doc, 800000):
-        st.warning('File or transcript too big!')
+def check_key_validity(api_key):
+    try:
+        openai.api_key = api_key
+        openai.Model.list()
+        return True
+    except openai.error.AuthenticationError:
         return False
 
-    if not token_minimum(doc, 2000):
-        st.warning('File or transcript too small!')
-        return False
-    return True
+def main():
+    st.title("JSF Summarizer")
 
+    goal = st.radio("What to Generate?", ('Caption', 'Article'))
 
-def validate_input(file_or_transcript, api_key, use_gpt_4):
-    """
-    Validates the user input, and displays warnings if the input is invalid
+    api_key = st.text_input("Enter API key here, or contact the author if you don't have one.")
+    st.markdown('[Author email](mailto:connect@jsfstudio.co)')
+    
+    st.sidebar.markdown('# Made by: [JSF Studio]')
+    
+    if goal == 'Caption':
+        uploaded_file = st.file_uploader("Upload the image file", type=['png', 'jpg'])
+        st.sidebar.markdown('# Git link: [Caption Generator]')
+    else:
+        user_input = st.text_input("Enter the Topic, Purpose and any other Instructions")
+        st.sidebar.markdown('# Git link: [Article Writing]')
 
-    :param file_or_transcript: The file uploaded by the user or the YouTube URL entered by the user
+    if st.button('Generate (click once and wait)'):
+        if not check_key_validity(api_key):
+            st.warning('Key not valid or API is down.')
+            return
 
-    :param api_key: The API key entered by the user
-
-    :param use_gpt_4: Whether the user wants to use GPT-4
-
-    :return: True if the input is valid, False otherwise
-    """
-    if file_or_transcript == None:
-        st.warning("Please upload a file or enter a YouTube URL.")
-        return False
-
-    if not check_key_validity(api_key):
-        st.warning('Key not valid or API is down.')
-        return False
-
-    if use_gpt_4 and not check_gpt_4(api_key):
-        st.warning('Key not valid for GPT-4.')
-        return False
-
-    return True
-
+        if goal == 'Caption':
+            if uploaded_file is not None:
+                process_generate_button(uploaded_file, api_key, caption_prompt, file=True)
+            else:
+                st.warning("Please upload an image file.")
+        else:
+            if user_input:
+                formatted_prompt = article_prompt.format(text=user_input)
+                process_generate_button(formatted_prompt, api_key, article_prompt, file=False)
+            else:
+                st.warning("Please enter the Topic, Purpose and any other Instructions.")
 
 if __name__ == '__main__':
     main()
-
