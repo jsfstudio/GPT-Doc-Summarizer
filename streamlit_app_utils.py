@@ -34,7 +34,7 @@ def check_gpt_4(api_key):
     :return: True if the user has access to GPT-4, False otherwise.
     """
     try:
-        ChatOpenAI(openai_api_key=api_key, model_name='gpt-4').call_as_llm('Hi')
+        ChatOpenAI(openai_api_key=api_key, model_name='gpt-4o').call_as_llm('Hi')
         return True
     except Exception as e:
         return False
@@ -120,9 +120,9 @@ def create_chat_model(api_key, use_gpt_4):
     :return: A chat model.
     """
     if use_gpt_4:
-        return ChatOpenAI(openai_api_key=api_key, temperature=0, max_tokens=500, model_name='gpt-3.5-turbo')
+        return ChatOpenAI(openai_api_key=api_key, temperature=0, max_tokens=500, model_name='gpt-4o')
     else:
-        return ChatOpenAI(openai_api_key=api_key, temperature=0, max_tokens=250, model_name='gpt-3.5-turbo')
+        return ChatOpenAI(openai_api_key=api_key, temperature=0, max_tokens=250, model_name='gpt-4o')
 
 
 
