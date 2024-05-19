@@ -1,4 +1,4 @@
-file_map = """
+caption_prompt = """
 Generate an SEO optimized and insightful caption for a marketing image. The caption should highlight key benefits, appeal to the target audience, and include relevant keywords for search engine optimization. Ensure the caption includes line breaks for better readability.
 
 Instructions:
@@ -38,21 +38,7 @@ Step into the future of e-commerce and transform your customer interactions toda
 """
 
 
-file_combine = """
-Read all the provided summaries from a larger document. They will be enclosed in triple backticks. 
-Determine what the overall document is about and summarize it with this information in mind.
-Synthesize the info into a well-formatted easy-to-read synopsis, structured like an essay that summarizes them cohesively. 
-Do not simply reword the provided text. Do not copy the structure from the provided text.
-Avoid repetition. Connect all the ideas together.
-Preceding the synopsis, write a short, bullet form list of key takeaways.
-Format in HTML. Text should be divided into paragraphs. Paragraphs should be indented. 
-
-'''{text}'''
-
-
-"""
-
-article_map = """
+article_prompt = """
 You will be given a topic and a purpose in text formate. This will be enclosed in triple backticks.
 
 '''{text}'''
@@ -91,17 +77,3 @@ Each Post must Highlight our name Cognitive Commerce (Cogmerce) and position our
 
 """
 
-
-youtube_combine = """
-Read all the provided summaries from a youtube transcript. They will be enclosed in triple backticks.
-Determine what the overall video is about and summarize it with this information in mind. 
-Synthesize the info into a well-formatted easy-to-read synopsis, structured like an essay that summarizes them cohesively. 
-Do not simply reword the provided text. Do not copy the structure from the provided text.
-Avoid repetition. Connect all the ideas together.
-Preceding the synopsis, write a short, bullet form list of key takeaways.
-Format in HTML. Text should be divided into paragraphs. Paragraphs should be indented. 
-
-'''{text}'''
-
-
-"""
