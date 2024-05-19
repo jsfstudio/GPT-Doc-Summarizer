@@ -70,25 +70,26 @@ def process_generate_button(file_or_transcript, api_key, use_gpt_4, find_cluster
             temp_file_path = create_temp_file(file_or_transcript)
             doc = doc_loader(temp_file_path)
             map_prompt = file_map
-            combine_prompt = file_combine
+            #combine_prompt = file_combine
         else:
             art = file_or_transcript
-            map_prompt = youtube_map
-            combine_prompt = youtube_combine
+            map_prompt = article_map
+            #combine_prompt = youtube_combine
         llm = create_chat_model(api_key, use_gpt_4)
         initial_prompt_list = summary_prompt_creator(map_prompt, 'text', llm)
-        final_prompt_list = summary_prompt_creator(combine_prompt, 'text', llm)
+        #final_prompt_list = summary_prompt_creator(combine_prompt, 'text', llm)
 
         if not validate_doc_size(doc):
             if file:
                 os.unlink(temp_file_path)
             return
 
-        if find_clusters:
-            summary = doc_to_final_summary(doc, 10, initial_prompt_list, final_prompt_list, api_key, use_gpt_4, find_clusters)
+        #if find_clusters:
+         #   summary = doc_to_final_summary(doc, 10, initial_prompt_list, final_prompt_list, api_key, use_gpt_4, find_clusters)
 
-        else:
-            summary = doc_to_final_summary(doc, 10, initial_prompt_list, final_prompt_list, api_key, use_gpt_4)
+       # else:
+        
+        generated = doc_to_final_summary(doc, 10, initial_prompt_list, final_prompt_list, api_key, use_gpt_4)
 
         st.markdown(summary, unsafe_allow_html=True)
         if file:
