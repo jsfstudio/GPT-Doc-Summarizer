@@ -1,10 +1,7 @@
 caption_prompt = """
 Generate an SEO optimized and insightful caption for a marketing image. The caption should highlight key benefits, appeal to the target audience, and include relevant keywords for search engine optimization. Ensure the caption includes line breaks for better readability.
 
-Instructions:
-
-Look at the uploaded file to understand the content of the image and create a compelling caption for it that captures attention, highlights the features, benefits, ROI for businesses and elevatio of customer service. An example is below
-
+An example is below:
 
 "🛒 Revolutionize E-Commerce with AI Chatbots! 🛒
 
