@@ -66,7 +66,7 @@ def check_key_validity(api_key):
         return False
 
 def main():
-    st.title("JSF Summarizer")
+    st.title("Cogmerce Social Media")
 
     goal = st.radio("What to Generate?", ('Caption', 'Article'))
 
