@@ -26,7 +26,7 @@ def process_generate_button(input_data, api_key, prompt, file=True):
             prompt = {
                 "role": "user",
                 "content": [
-                    {"type": "text", "text": "What’s in this image?"},
+                    {"type": "text", "text": caption_prompt},
                     {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{base64_image}"}}
                 ]
             }
