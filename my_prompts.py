@@ -3,21 +3,8 @@ Generate an SEO optimized and insightful caption for a marketing image. The capt
 
 Instructions:
 
-Look at the uploaded file to understand the content of the image.
-Use the provided details to craft the caption.
-Details for the Image:
+Look at the uploaded file to understand the content of the image and create a compelling caption for it that captures attention, highlights the features, benefits, ROI for businesses and elevatio of customer service. An example is below
 
-Image Description: (Describe the content of the image and any text it includes)
-Target Audience: (Specify the intended audience for the product or service)
-Key Benefits to Highlight: (List the main benefits that should be included in the caption)
-Keywords to Include: (Provide a list of relevant keywords for SEO)
-Example:
-
-Image Description: AI chatbots helping people shop online with a laptop in the background showing an e-commerce site.
-Target Audience: E-commerce business owners and online retailers.
-Key Benefits to Highlight: Personalized shopping assistance, instant FAQ responses, improved customer experience.
-Keywords to Include: AI chatbots, e-commerce, customer engagement, online shopping, personalized assistance.
-Generated Caption:
 
 "🛒 Revolutionize E-Commerce with AI Chatbots! 🛒
 
